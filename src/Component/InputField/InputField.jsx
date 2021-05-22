@@ -14,7 +14,6 @@ function InputField({ form, name, label }) {
    const { errors } = form.formState;
 
    const isBug = errors[name];
-   console.log(isBug);
    return (
       <Controller
          name={name}

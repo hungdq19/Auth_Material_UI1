@@ -1,24 +1,29 @@
 import { unwrapResult } from '@reduxjs/toolkit';
+import { useSnackbar } from 'notistack';
+import PropTypes from 'prop-types';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import RegisterForm from '../Register/RegisterForm';
 import { register } from '../userSlice';
 
-Register.propTypes = {};
+Register.propTypes = {
+   closeForm: PropTypes.func.isRequired,
+};
 
-function Register(props) {
-   const data = useSelector((state) => state.user);
+function Register({ closeForm }) {
    const dispatch = useDispatch();
+   const { enqueueSnackbar } = useSnackbar();
    const handleSubmit = async (values) => {
-      // Xu li form khi validation thanh cong
       try {
          values.username = values.email;
-         const action = register(values);
-         const resultAction = await dispatch(action);
+         const resultAction = await dispatch(register(values));
          const user = unwrapResult(resultAction);
-         console.log(user);
+         if (closeForm) {
+            closeForm();
+         }
+         enqueueSnackbar(`Xin chao ${user.username}`, { variant: 'success' });
       } catch (error) {
-         console.log(error);
+         enqueueSnackbar(error.message, { variant: 'error' });
       }
    };
    return (

@@ -28,21 +28,16 @@ const useStyles = makeStyles((theme) => ({
       position: 'absolute',
    },
 }));
-RegisterForm.propTypes = {
+LoginForm.propTypes = {
    onSubmit: PropTypes.func.isRequired,
 };
 
-function RegisterForm({ onSubmit }) {
+function LoginForm({ onSubmit }) {
    const classes = useStyles();
    const schema = yup.object().shape({
       //validation nhập tên ít nhất phải có 2 kí tự
-      fullName: yup
-         .string()
-         .required('Vui long nhập trường này')
-         .test('Nhap vao 2 tu', 'Nhập ít nhất 2 kí tự', (value) => {
-            return value.split(' ').length >= 2;
-         }),
-      email: yup
+
+      identifier: yup
          .string()
          .required('Vui lòng nhập trường này')
          .email('Bạn nhập không phải là email'),
@@ -50,17 +45,11 @@ function RegisterForm({ onSubmit }) {
          .string()
          .required('Vui lòng nhập trường này')
          .min(6, 'Bạn Phải nhập ít nhất là 6 kí tự :D'),
-      password2: yup
-         .string()
-         .required('Vui lòng nhập trường này')
-         .oneOf([yup.ref('password')], 'Mật khẩu bạn nhập không trùng nhau :(('),
    });
    const form = useForm({
       defaultValue: {
-         fullName: '',
          email: '',
          password: '',
-         password2: '',
       },
       resolver: yupResolver(schema),
    });
@@ -68,6 +57,7 @@ function RegisterForm({ onSubmit }) {
    const { handleSubmit, formState } = form;
    const { isSubmitting } = formState;
    const handleSubmitForm = async (formdata) => {
+      console.log(formdata);
       if (!onSubmit) return;
       await onSubmit(formdata);
    };
@@ -79,13 +69,11 @@ function RegisterForm({ onSubmit }) {
             <LockIcon></LockIcon>
          </Avatar>
          <Typography variant="h5" className={classes.title}>
-            Đăng Kí Tài Khoản
+            Đăng Nhập
          </Typography>
          <form onSubmit={handleSubmit(handleSubmitForm)}>
-            <InputField form={form} name="fullName" label="Full Name" />
-            <InputField form={form} name="email" label="Email" />
+            <InputField form={form} name="identifier" label="Email" />
             <PassWordField form={form} name="password" label="Password" />
-            <PassWordField form={form} name="password2" label="Confirm Password" />
             <Button
                className={classes.submit}
                type="Submit"
@@ -93,11 +81,11 @@ function RegisterForm({ onSubmit }) {
                color="primary"
                fullWidth
             >
-               Đăng kí tài khoản
+               Login
             </Button>
          </form>
       </div>
    );
 }
 
-export default RegisterForm;
+export default LoginForm;

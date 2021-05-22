@@ -1,26 +1,42 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import userApi from '../../api/UserApi';
-export const register = createAsyncThunk('users/register', async (formdata) => {
-   try {
-      const res = await userApi.register(formdata);
-      localStorage.setItem('TOKEN', res.jwt);
-      localStorage.setItem('Users', JSON.stringify(res.user));
-      return res.user;
-   } catch (error) {
-      console.log(`loi gi vay`, error);
-   }
+//action register
+export const register = createAsyncThunk('users/register', async (payload) => {
+   const res = await userApi.register(payload);
+   console.log(res);
+   localStorage.setItem('TOKEN', res.jwt);
+   localStorage.setItem('Users', JSON.stringify(res.user));
+   return res.user;
+});
+//action login
+export const login = createAsyncThunk('users/login', async (payload) => {
+   const res = await userApi.login(payload);
+   console.log(res);
+   localStorage.setItem('TOKEN', res.jwt);
+   localStorage.setItem('Users', JSON.stringify(res.user));
+   return res.user;
 });
 const userSlice = createSlice({
    name: 'users',
    initialState: {
-      current: {},
+      current: JSON.parse(localStorage.getItem('Users')) || {},
    },
-   reducers: {},
+   reducers: {
+      logout(state) {
+         localStorage.removeItem('Users');
+         localStorage.removeItem('TOKEN');
+         state.current = {};
+      },
+   },
    extraReducers: {
       [register.fulfilled]: (state, action) => {
          state.current = action.payload;
       },
+      [login.fulfilled]: (state, action) => {
+         state.current = action.payload;
+      },
    },
 });
-const { reducer } = userSlice;
+const { actions, reducer } = userSlice;
+export const { logout } = actions;
 export default reducer;

@@ -8,6 +8,7 @@ const axiosClient = axios.create({
 // Add a request interceptor
 axiosClient.interceptors.request.use(
    function (config) {
+      console.log(config);
       // Do something before request is sent
       return config;
    },
@@ -21,10 +22,15 @@ axiosClient.interceptors.request.use(
 axiosClient.interceptors.response.use(
    function (response) {
       // Any status code that lie within the range of 2xx cause this function to trigger
-      // Do something with response dataa
+      // Do something with response data
       return response.data;
    },
    function (error) {
+      const { config, status, data } = error.response;
+
+      if (config.url === '/auth/local/register' && data.statusCode === 400 && status === 400) {
+         throw new Error('Loi con me no roi');
+      }
       // Any status codes that falls outside the range of 2xx cause this function to trigger
       // Do something with response error
       return Promise.reject(error);
