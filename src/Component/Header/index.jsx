@@ -4,25 +4,25 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Close from '@material-ui/icons/Close';
 import MenuIcon from '@material-ui/icons/Menu';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Login from '../../Features/Auth/Login';
-import LoginForm from '../../Features/Auth/Login/LoginForm';
 import Register from '../../Features/Auth/Register';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import { logout } from '../../Features/Auth/userSlice';
 
 const useStyles = makeStyles((theme) => ({
    root: {
       flexGrow: 1,
       position: 'relative',
+      backgroundColor: theme.palette.secondary.main,
    },
    menuButton: {
       marginRight: theme.spacing(2),
