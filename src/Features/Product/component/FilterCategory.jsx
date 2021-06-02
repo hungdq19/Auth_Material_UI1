@@ -19,19 +19,33 @@ function FilterCategory({ onChange }) {
          }
       })();
    }, []);
-   const handleClick = (id) => {
-      if (!onChange) return;
 
-      onChange(id);
+   const handleClick = (id, name) => {
+      if (!onChange) return;
+      const data = {
+         id,
+         name,
+      };
+
+      onChange(data);
    };
    return (
       <Box padding={1}>
-         <Typography>DANH SÁCH SẢN PHẨM</Typography>
-         {categoryList.map((item) => (
-            <Box padding={2} key={item.id} onClick={() => handleClick(item.id)}>
-               {item.name}
-            </Box>
-         ))}
+         <Box margin={1}>
+            <Typography variant="h5">Loại Sản Phẩm</Typography>
+         </Box>
+         <Paper>
+            {categoryList.map((item) => (
+               <Box
+                  className="category"
+                  padding={2}
+                  key={item.id}
+                  onClick={() => handleClick(item.id, item.name)}
+               >
+                  {item.name}
+               </Box>
+            ))}
+         </Paper>
       </Box>
    );
 }

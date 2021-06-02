@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;1,100;1,200;1,300&display=swap');
 html{
   background-color: azure;
+  font-family: 'Poppins', sans-serif;
 }
 body {
   margin: 0;
@@ -13,4 +15,8 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+.category:hover{
+  cursor: pointer;
+  font-size: 30px;
 }

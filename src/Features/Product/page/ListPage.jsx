@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { Box, Container, Grid } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import productApi from '../../../api/productApi';
-import Sekeleton from '../component/sekeleton';
-import ProductList from '../component/ProductList';
+import { makeStyles } from '@material-ui/core/styles';
 import Pagination from '@material-ui/lab/Pagination';
-import ProductSort from '../component/ProductSort';
+import React, { useEffect, useState } from 'react';
+import productApi from '../../../api/productApi';
+import FilterView from '../component/FilterView';
 import ProductFilter from '../component/ProductFilter';
-
+import ProductList from '../component/ProductList';
+import ProductSort from '../component/ProductSort';
+import Sekeleton from '../component/sekeleton';
+import { useHistory, useLocation } from 'react-router-dom';
+import queryString from 'query-string';
 ListPage.propTypes = {};
 
 const useStyles = makeStyles((theme) => ({
@@ -19,8 +20,7 @@ const useStyles = makeStyles((theme) => ({
    paper: {
       padding: theme.spacing(2),
       textAlign: 'center',
-      height: '100%',
-      color: theme.palette.text.secondary,
+      color: 'black',
    },
    left: {
       width: '250px',
@@ -39,20 +39,34 @@ const useStyles = makeStyles((theme) => ({
 
 function ListPage(props) {
    const classes = useStyles();
+   const history = useHistory();
+   const location = useLocation();
+   const queryParam = queryString.parse(location.search);
+
    // loading load sekeleton
    const [loading, setLoading] = useState(true);
-   // du lieu tra ve co pagination, khoi tao state 
+   // du lieu tra ve co pagination, khoi tao state
    const [pagination, setPagination] = useState({
       page: 1,
       limit: 12,
       total: 10,
    });
-   // 
-   const [filter, setFilter] = useState({
-      _page: 1,
-      _limit: 12,
-      _sort: 'salePrice:ASC',
-   });
+   //sync url after refesh browsers
+   const [filter, setFilter] = useState(() => ({
+      ...queryParam,
+      _page: queryParam._page || 1,
+      _limit: queryParam._limit || 12,
+      _sort: queryParam._sort || 'salePrice:ASC',
+   }));
+   // sync url
+   useEffect(() => {
+      // console.log(history);
+      // console.log(location);
+      history.push({
+         pathname: history.location.pathname,
+         search: queryString.stringify(filter),
+      });
+   }, [history, filter]);
    const [product, setProduct] = useState([]);
    useEffect(() => {
       const fetchProduct = async () => {
@@ -80,12 +94,15 @@ function ListPage(props) {
          _sort: newValue,
       }));
    };
-   const handleFilterChange = (newFilter) =>{
+   const handleFilterChange = (newFilter) => {
       setFilter((prevFilter) => ({
          ...prevFilter,
          ...newFilter,
-      }))
-   }
+      }));
+   };
+   const handleChangeView = (newFilter) => {
+      setFilter(newFilter);
+   };
    return (
       <Box className={classes.box}>
          <Container>
@@ -93,13 +110,16 @@ function ListPage(props) {
                <Grid item className={classes.left}>
                   <Paper className={classes.paper}>
                      {/* Loc theo danh muc san pham */}
-                     <ProductFilter filter={filter} onChange={handleFilterChange}/>
+                     <ProductFilter filter={filter} onChange={handleFilterChange} />
                   </Paper>
                </Grid>
                <Grid item className={classes.right}>
                   <ProductSort currentValue={filter._sort} onChange={handleSortChange} />
+                  <Paper>
+                     <FilterView filter={filter} onChange={handleChangeView} />
+                  </Paper>
                   <Paper className={classes.paper}>
-                     <h2>List San Pham</h2>
+                     <h2>Danh Sách Sản Phẩm</h2>
                      {/* Product LIST */}
                      {loading ? <Sekeleton /> : <ProductList data={product}></ProductList>}
                      <Box className={classes.pagination}>

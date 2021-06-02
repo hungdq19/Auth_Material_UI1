@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Box, Container, Grid } from '@material-ui/core';
+import { Box, Grid } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 Sekeleton.propTypes = {
    length: PropTypes.number,

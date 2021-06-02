@@ -1,6 +1,6 @@
+import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import './App.css';
 import Header from './Component/Header';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import ProductFeature from './Features/Product';
 function App() {
    return (

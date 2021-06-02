@@ -1,11 +1,11 @@
+import { SnackbarProvider } from 'notistack';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
+import App from './App';
+import './index.css';
+import reportWebVitals from './reportWebVitals';
 import store from './Store';
-import { SnackbarProvider, useSnackbar } from 'notistack';
 
 ReactDOM.render(
    <React.StrictMode>

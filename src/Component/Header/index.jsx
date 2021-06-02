@@ -14,6 +14,7 @@ import Close from '@material-ui/icons/Close';
 import MenuIcon from '@material-ui/icons/Menu';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
 import Login from '../../Features/Auth/Login';
 import Register from '../../Features/Auth/Register';
 import { logout } from '../../Features/Auth/userSlice';
@@ -43,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header() {
    const dispatch = useDispatch();
+ 
    const isUser = useSelector((state) => state.user.current);
    const isLogin = !!isUser.id;
    const classes = useStyles();
@@ -74,78 +76,81 @@ export default function Header() {
    };
 
    return (
-      <div className={classes.root}>
-         <AppBar position="static">
-            <Toolbar>
-               <IconButton
-                  edge="start"
-                  className={classes.menuButton}
-                  color="inherit"
-                  aria-label="menu"
-               >
-                  <MenuIcon />
-               </IconButton>
-               <Typography variant="h6" className={classes.title}>
-                  Home
-               </Typography>
-               {isLogin && (
-                  <IconButton onClick={handleClick} color="inherit">
-                     {/* <Typography>{`hello:${isUser.id}`}</Typography> */}
-                     <AccountCircleIcon></AccountCircleIcon>
+      <Router>
+         <div className={classes.root}>
+            <AppBar position="static">
+               <Toolbar>
+                  <IconButton
+                     edge="start"
+                     className={classes.menuButton}
+                     color="inherit"
+                     aria-label="menu"
+                  >
+                     <MenuIcon />
                   </IconButton>
-               )}
-               {!isLogin && (
-                  <Button color="inherit" onClick={handleClickOpen}>
-                     Login
-                  </Button>
-               )}
-            </Toolbar>
-         </AppBar>
-         <Menu
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleCloseMenu}
-            anchorOrigin={{
-               vertical: 'bottom',
-               horizontal: 'left',
-            }}
-            transformOrigin={{
-               vertical: 'top',
-               horizontal: 'left',
-            }}
-            getContentAnchorEl={null}
-         >
-            <MenuItem onClick={handleCloseMenu}>My account</MenuItem>
-            <MenuItem onClick={handleLogOut}>Logout</MenuItem>
-         </Menu>
-         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-            <IconButton onClick={handleClose} className={classes.close}>
-               <Close />
-            </IconButton>
-            <DialogContent>
-               {mode === MODE.REGISTER && (
-                  <>
-                     <Register closeForm={handleClose} />
-                     <Box textAlign="center">
-                        <Button onClick={() => setMode(MODE.LOGIN)}>
-                           Already have acount, Login here
-                        </Button>
-                     </Box>
-                  </>
-               )}
-               {mode === MODE.LOGIN && (
-                  <>
-                     <Login closeForm={handleClose} />
-                     <Box textAlign="center">
-                        <Button onClick={() => setMode(MODE.REGISTER)}>
-                           Don't have acount, Registers here
-                        </Button>
-                     </Box>
-                  </>
-               )}
-            </DialogContent>
-         </Dialog>
-      </div>
+                  <Typography variant="h6" className={classes.title}>
+                     Home
+                  </Typography>
+                  {isLogin && (
+                     <IconButton onClick={handleClick} color="inherit">
+                        {/* <Typography>{`hello:${isUser.id}`}</Typography> */}
+                        <AccountCircleIcon></AccountCircleIcon>
+                     </IconButton>
+                  )}
+                  {!isLogin && (
+                     <Button color="inherit" onClick={handleClickOpen}>
+                        Login
+                     </Button>
+                  )}
+                  
+               </Toolbar>
+            </AppBar>
+            <Menu
+               anchorEl={anchorEl}
+               keepMounted
+               open={Boolean(anchorEl)}
+               onClose={handleCloseMenu}
+               anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+               }}
+               transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+               }}
+               getContentAnchorEl={null}
+            >
+               <MenuItem onClick={handleCloseMenu}>My account</MenuItem>
+               <MenuItem onClick={handleLogOut}>Logout</MenuItem>
+            </Menu>
+            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+               <IconButton onClick={handleClose} className={classes.close}>
+                  <Close />
+               </IconButton>
+               <DialogContent>
+                  {mode === MODE.REGISTER && (
+                     <>
+                        <Register closeForm={handleClose} />
+                        <Box textAlign="center">
+                           <Button onClick={() => setMode(MODE.LOGIN)}>
+                              Already have acount, Login here
+                           </Button>
+                        </Box>
+                     </>
+                  )}
+                  {mode === MODE.LOGIN && (
+                     <>
+                        <Login closeForm={handleClose} />
+                        <Box textAlign="center">
+                           <Button onClick={() => setMode(MODE.REGISTER)}>
+                              Don't have acount, Registers here
+                           </Button>
+                        </Box>
+                     </>
+                  )}
+               </DialogContent>
+            </Dialog>
+         </div>
+      </Router>
    );
 }
