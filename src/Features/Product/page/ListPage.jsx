@@ -67,7 +67,11 @@ function ListPage(props) {
          search: queryString.stringify(filter),
       });
    }, [history, filter]);
+
+
    const [product, setProduct] = useState([]);
+
+   
    useEffect(() => {
       const fetchProduct = async () => {
          try {

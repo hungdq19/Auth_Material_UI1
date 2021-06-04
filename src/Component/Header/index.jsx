@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core';
+import { Badge, Box } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -18,6 +18,8 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import Login from '../../Features/Auth/Login';
 import Register from '../../Features/Auth/Register';
 import { logout } from '../../Features/Auth/userSlice';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import { cartItemCountSelector } from '../../Features/Cart/cartSelector';
 
 const useStyles = makeStyles((theme) => ({
    root: {
@@ -44,8 +46,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header() {
    const dispatch = useDispatch();
- 
+
    const isUser = useSelector((state) => state.user.current);
+   const cartItemCount = useSelector(cartItemCountSelector);
    const isLogin = !!isUser.id;
    const classes = useStyles();
    const MODE = {
@@ -102,7 +105,11 @@ export default function Header() {
                         Login
                      </Button>
                   )}
-                  
+                  <IconButton aria-label="show 4 new mails" color="inherit">
+                     <Badge badgeContent={cartItemCount} color="secondary">
+                        <ShoppingCartIcon />
+                     </Badge>
+                  </IconButton>
                </Toolbar>
             </AppBar>
             <Menu
